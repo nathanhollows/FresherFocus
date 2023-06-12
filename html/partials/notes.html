@@ -1,0 +1,25 @@
+{{ define "notes" }}
+{{ range .}}
+<article id="note{{ .ID }}" class="note" hx-vals='{"note": "{{ .ID }}"}'>
+    {{ md .Content }}
+    <footer>
+        <div>
+            <span>
+                Posted on <time datetime="{{ date .CreatedAt }}">{{ date .CreatedAt }}</time>
+                {{ if ne .CreatedAt .UpdatedAt }}
+                &nbsp;&middot;&nbsp; Edited on <time datetime="{{ .UpdatedAt }}">{{ date .UpdatedAt }}</time>
+                {{ end }}
+            </span>
+            <span style="float: inline-end">
+                <a id="delete{{ .ID }}" hx-delete="/note/{{ .ID }}" hx-target="#note{{.ID}}" hx-swap="outerHTML"></a>
+                <a href="" data-target="modal-example" data-delete="delete{{.ID}}" onClick="toggleModal(event)">
+                    Delete
+                </a>
+                &nbsp;&middot;&nbsp;
+                <a href="" hx-get="/note/edit/{{ .ID }}" hx-target="#note{{.ID}}" hx-swap="outerHTML">Edit</a>
+            </span>
+        </div>
+    </footer>
+</article>
+{{ end }}
+{{ end }}

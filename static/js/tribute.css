@@ -1,0 +1,37 @@
+.tribute-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: auto;
+  overflow: auto;
+  display: block;
+  z-index: 999999;
+  box-shadow: var(--card-box-shadow);
+  border-radius: var(--border-radius);
+  border: 1px solid var(--card-border-color);
+}
+.tribute-container ul {
+  margin: 0;
+  margin-top: 2px;
+  padding: 0;
+  list-style: none;
+  background: var(--background-color);
+  box-shadow: var(--card-box-shadow);
+  border-radius: var(--border-radius);
+}
+.tribute-container li {
+  padding: 5px 5px;
+  cursor: pointer;
+}
+.tribute-container li.highlight {
+  background: var(--primary-focus);
+}
+.tribute-container li span {
+  font-weight: bold;
+}
+.tribute-container li.no-match {
+  cursor: default;
+}
+.tribute-container .menu-highlighted {
+  font-weight: bold;
+}

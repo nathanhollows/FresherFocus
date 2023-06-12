@@ -1,0 +1,26 @@
+{{ define "fragment" }}
+{{ if not .students }}
+<tr>
+    <td colspan="4" style="text-align: center;">
+        <em>{{ .empty }}</em>
+    </td>
+</tr>
+{{ end }}
+{{ range .students }}
+<tr>
+    <td>
+        {{ .AcademicYear }}
+    </td>
+    <td>
+        {{ .First_name }}
+        {{ if .KnownAs }} <small>({{ .KnownAs }})</small> {{ end }}
+    </td>
+    <td>
+        {{ .Surname }}
+    </td>
+    <td>
+        {{ .Badge }}
+    </td>
+</tr>
+{{ end }}
+{{ end }}

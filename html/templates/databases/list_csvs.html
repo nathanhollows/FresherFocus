@@ -1,0 +1,10 @@
+{{ define "fragment" }}
+{{ range .csvs }}
+<details>
+    <summary>
+        {{ .Name }}
+    </summary>
+    <em>Processed</em>
+</details>
+{{ end }}
+{{ end }}

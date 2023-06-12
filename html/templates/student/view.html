@@ -1,0 +1,244 @@
+{{ define "body" }}
+<style>
+    .badge svg {
+        width: 1em;
+        height: 1em;
+        margin-top: -0.2em;
+    }
+</style>
+<main class="container">
+    <aside>
+        <div>
+            <details open>
+                <summary>Details</summary>
+                <ul>
+                    <li>
+                        {{ if eq .student.Declared "Y"}}
+                        <span class="badge open">Declared</span>
+                        {{ else }}
+                        <span class="badge closed">Not declared</span>
+                        {{ end }}
+                    </li>
+                    {{ if eq .student.Residency "International Student" }}
+                    <li>
+                        <span class="badge">
+                            {{ .student.Residency }}
+                        </span>
+                    </li>
+                    {{ end }}
+                    {{ if eq .student.Dis_affect_study "Y"}}
+                    <li>
+                        <span class="badge">Disability affected study</span>
+                    </li>
+                    {{ end }}
+                    <li>
+                        ID: <span class="copy" data-tooltip="Click to copy">{{ .student.ID }}</span>
+                    </li>
+                    <li>
+                        Gender: {{ .student.Gender }}
+                    </li>
+                    <li>
+                        Age: {{ .student.Age }}
+                    </li>
+                    <li>
+                        Enrollment Year: {{ .student.AcademicYear }}
+                    </li>
+                </ul>
+            </details>
+            
+            {{ if ne (len .student.TOC) 0 }}
+            <details open hx-get="/student/{{ .student.ID }}/fragment/toc" hx-trigger="notes from:body" hx-swap="innerHTML" >
+                <summary>Table of Contents</summary>
+                <ul >
+                    {{ range .student.TOC }}
+                    <li>
+                        {{ if .Break }}<hr>{{ else }}<a href="#{{ .Anchor }}">{{ .Title }}</a>{{ end }}
+                    </li>
+                    {{ end }}
+                </ul>
+            </details>
+            {{ end }}
+            <details open>
+                <summary>Contact</summary>
+                <ul>
+                    <li>
+                        <span class="copy" data-tooltip="Click to copy">{{ .student.Mobile }}</span>
+                    </li>
+                    <li>
+                        <span class="copy" data-tooltip="Click to copy">{{ .student.Email }}</span>
+                    </li>
+                </ul>
+            </details>
+            <details open id="tags">
+                <summary>Tags</summary>
+                <ul>
+                    <li style="max-width: 240px;">
+                        {{ range .student.Tags }}
+                        <a href="#" hx-post="/student/{{ $.student.ID }}/tag/{{ .Tag }}" hx-target="#tags" style="display: inline-block;">
+                            <span class="badge tag">
+                                {{ .Tag }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            </span>
+                        </a>
+                        {{ end }}
+                        {{ range .nontags }}
+                        <a href="#" hx-post="/student/{{ $.student.ID }}/tag/{{ . }}" hx-target="#tags" style="display: inline-block;">
+                            <span class="badge">{{ . }}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                            </span>
+                        </a>
+                        {{ end }}
+                    </li>
+                </ul>
+            </details>
+            <details>
+                <summary>First year study</summary>
+                <ul>
+                    <li>    
+                        {{ if .student.Prog1 }}
+                        {{ .student.Prog1 }}
+                        {{ .student.Prog1_m1 }}
+                        {{ .student.Prog1_m2 }}
+                        {{ end }}
+                        {{ if .student.Prog2 }}
+                        {{ .student.Prog2 }}
+                        {{ .student.Prog2_m1 }}
+                        {{ .student.Prog2_m2 }}
+                        {{ end }}
+                        {{ if .student.Prog3 }}
+                        {{ .student.Prog3 }}
+                        {{ .student.Prog3_m1 }}
+                        {{ .student.Prog3_m2 }}
+                        {{ end }}
+                    </li>
+                    {{ $i := "" }}
+                    {{ range .student.PaperCodes }}
+                    {{ if ne $i .Semester }}
+                    {{ if ne $i "" }}
+                    {{ end }}
+                    <li>
+                        <em>Period {{ .Semester }}</em>
+                    </li>
+                    {{ end }}
+                    <li>
+                        {{ $i = .Semester }}
+                        <a href="https://www.otago.ac.nz/courses/papers/?papercode={{.PaperCode}}" target="_blank">{{ .PaperCode }}</a>
+                    </li>
+                    {{ end }}
+                </ul>
+            </details>
+            <details>
+                <summary>History</summary>
+                <ul>
+                    <li>
+                        Citizenship: {{ .student.Citizenship }}
+                    </li>
+                    <li>
+                        {{ .student.Ethnic1 }}
+                    </li>
+                    <li>
+                        {{ .student.Ethnic2 }}
+                    </li>
+                    <li>
+                        {{ .student.Ethnic3 }}
+                    </li>
+                    {{ if eq .student.European "Y"}}
+                    <li>
+                        European
+                    </li>
+                    {{ end }}
+                    {{ if eq .student.Maori "Y"}}
+                    <li>
+                        Māori
+                    </li>
+                    {{ end }}
+                    {{ if eq .student.Pacific "Y"}}
+                    <li>
+                        Pacific
+                    </li>
+                    {{ end }}
+                    {{ if eq .student.Asian "Y"}}
+                    <li>
+                        Asian
+                    </li>
+                    {{ end }}
+                    {{ if eq .student.Melaa "Y"}}
+                    <li>
+                        (Middle Eastern, Latin American, African)
+                    </li>
+                    {{ end }}
+                </ul>
+            </details>
+            {{ if eq .student.AcademicYear year}}
+            <details>
+                <summary>Address</summary>
+                <ul>
+                    <li>
+                        <strong>Semester Address:</strong><br>
+                        {{ if .student.Study_address1 }}{{ .student.Study_address1 }}<br>{{ end }}
+                        {{ if .student.Study_address2 }}{{ .student.Study_address2 }}<br>{{ end }}
+                        {{ if .student.Study_address3 }}{{ .student.Study_address3 }}<br>{{ end }}
+                        {{ if .student.Study_address4 }}{{ .student.Study_address4 }}{{ end }}
+                        {{ if .student.Study_address5 }}{{ .student.Study_address5 }}{{ end }}
+                        {{ if .student.Study_postcode }}{{ .student.Study_postcode }}{{ end }}
+                        <br>
+                        <br>
+                        <strong>Home Address:</strong><br>
+                        {{ if .student.Home_address1 }}{{ .student.Home_address1 }}<br>{{ end }}
+                        {{ if .student.Home_address2 }}{{ .student.Home_address2 }}<br>{{ end }}
+                        {{ if .student.Home_address3 }}{{ .student.Home_address3 }}<br>{{ end }}
+                        {{ if .student.Home_address4 }}{{ .student.Home_address4 }}{{ end }}
+                        {{ if .student.Home_address5 }}{{ .student.Home_address5 }}{{ end }}
+                        {{ if .student.Home_postcode }}{{ .student.Home_postcode }}{{ end }}
+                    </li>
+                </ul>
+            </details>
+            {{ end }}
+        </div>
+    </aside>
+    <div role="document">
+        <h1 class="text-cursor" hx-get="/student/{{ .student.ID }}/edit/name" hx-swap="outerHTML">
+            {{ .student.Name }}
+        </h1>
+        
+        {{ if .student.Cases }}
+        <h2 id="cases">Cases</h2>
+        <table>
+            <tbody>
+                {{ range .student.Cases }}
+                <tr style="--border-width: 0;">
+                    <td>
+                        <span class="badge {{ lower .Status}}">{{ .Status }}</span>
+                    </td>
+                    <td>
+                        <a href="/case/{{ .ID }}">
+                            <strong>{{ .Title }}</strong>
+                        </a>
+                    </td>
+                    <td>
+                        <em style="float: inline-end">
+                            <time datetime="{{ .CreatedAt }}">{{ date .CreatedAt }}</time>
+                        </em>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        {{ .Summary }}
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+        {{ end }} 
+        
+        <h2>Notes</h2>
+        {{ template "notes" .student.Notes }}
+        <div id="new-note">
+            <p style="text-align: center;">
+                <a href="#" hx-get="/note/add/student/{{ .student.ID }}" hx-target="#new-note" role="button">Add a note</a>
+            </p>
+        </div>
+    </div>
+</main>
+{{ end }}

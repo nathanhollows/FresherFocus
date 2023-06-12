@@ -1,0 +1,138 @@
+{% the fragment included in the view %}
+{{ define "sidebar" }}
+<details open>
+    <summary>Details</summary>
+    <ul>
+        <li>
+            {{ if .case.ClosedAt.IsZero }}
+            <span class="badge open pointer" hx-post="/case/{{ .case.ID }}/togglestatus" hx-target="this" hx-swap="outerHTML">Open</span>
+            {{ else }}
+            <span class="badge closed pointer" hx-post="/case/{{ .case.ID}}/togglestatus" hx-target="this" hx-swap="outerHTML">Closed</span>
+            {{ end }}
+        </li>
+        <li>
+            Case <span class="copy" data-tooltip="Click to copy" data-value="#{{ .case.ID }}#">#{{ .case.ID }}</span>
+        </li>
+        <li>
+            Opened on <time datetime="{{ .case.CreatedAt }}">{{ date .case.CreatedAt }}</time>
+        </li>
+        {{ if ne .case.CreatedAt .case.UpdatedAt }}
+        <li>
+            Last updated on <time datetime="{{ .case.UpdatedAt }}">{{ date .case.UpdatedAt }}</time>
+        </li>
+        {{ end }}
+        <li id="closingtime">
+            {{ if not .case.ClosedAt.IsZero }}
+            Closed on <time datetime="{{ .case.ClosedAt }}">{{ date .case.ClosedAt }}</time>
+            {{ end }}
+        </li>
+    </ul>
+</details>
+{{ if ne (len .case.TOC) 0 }}
+<details open>
+    <summary>Table of Contents</summary>
+    <ul>
+        {{ range .case.TOC }}
+        <li>
+            {{ if .Break }}<hr>{{ else }}<a href="#{{ .Anchor }}">{{ .Title }}</a>{{ end }}
+        </li>
+        {{ end }}
+    </ul>
+</details>
+{{ end }}
+<details open>
+    <summary>Students involved</summary>
+    <ul hx-boost="true">
+        {{ range .case.Students }}
+        <li>
+            {{ .Badge }} {{ .Name }}
+        </li>
+        {{ end }}
+    </ul>
+</details>
+<details id="files" open>
+    <summary>Files</summary>
+    <ul>
+        {{ if .case.Files }}
+        {{ range .case.Files }}
+        <li class="file">
+            <a href="/static/files/{{ .Path }}" target="_blank" data-tooltip="Uploaded {{ date .CreatedAt }}">{{ .Name }}</a>
+        </li>
+        {{ end }}
+        {{ else }}
+        <li>
+            <em>Drag and drop files to upload</em>
+        </li>
+        {{ end }}
+    </ul>
+</details>
+{{ end }}
+
+{{ define "fragment" }}
+<details open>
+    <summary>Details</summary>
+    <ul>
+        <li>
+            {{ if .case.ClosedAt.IsZero }}
+            <span class="badge open pointer" hx-post="/case/{{ .case.ID }}/togglestatus" hx-target="this" hx-swap="outerHTML">Open</span>
+            {{ else }}
+            <span class="badge closed pointer" hx-post="/case/{{ .case.ID}}/togglestatus" hx-target="this" hx-swap="outerHTML">Closed</span>
+            {{ end }}
+        </li>
+        <li>
+            Case <span class="copy" data-tooltip="Click to copy" data-value="#{{ .case.ID }}#">#{{ .case.ID }}</span>
+        </li>
+        <li>
+            Opened on <time datetime="{{ .case.CreatedAt }}">{{ date .case.CreatedAt }}</time>
+        </li>
+        {{ if ne .case.CreatedAt .case.UpdatedAt }}
+        <li>
+            Last updated on <time datetime="{{ .case.UpdatedAt }}">{{ date .case.UpdatedAt }}</time>
+        </li>
+        {{ end }}
+        <li id="closingtime">
+            {{ if not .case.ClosedAt.IsZero }}
+            Closed on <time datetime="{{ .case.ClosedAt }}">{{ date .case.ClosedAt }}</time>
+            {{ end }}
+        </li>
+    </ul>
+</details>
+{{ if ne (len .case.TOC) 0 }}
+<details open>
+    <summary>Table of Contents</summary>
+    <ul>
+        {{ range .case.TOC }}
+        <li>
+            {{ if .Break }}<hr>{{ else }}<a href="#{{ .Anchor }}">{{ .Title }}</a>{{ end }}
+        </li>
+        {{ end }}
+    </ul>
+</details>
+{{ end }}
+<details open>
+    <summary>Students involved</summary>
+    <ul hx-boost="true">
+        {{ range .case.Students }}
+        <li>
+            {{ .Badge }} {{ .Name }}
+        </li>
+        {{ end }}
+    </ul>
+</details>
+<details id="files" open>
+    <summary>Files</summary>
+    <ul>
+        {{ if .case.Files }}
+        {{ range .case.Files }}
+        <li class="file">
+            <a href="/static/files/{{ .Path }}" target="_blank" data-tooltip="Uploaded {{ date .CreatedAt }}">{{ .Name }}</a>
+        </li>
+        {{ end }}
+        {{ else }}
+        <li>
+            <em>Drag and drop files to upload</em>
+        </li>
+        {{ end }}
+    </ul>
+</details>
+{{ end }}

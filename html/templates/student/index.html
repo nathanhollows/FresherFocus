@@ -1,0 +1,75 @@
+{{ define "body" }}
+<main class="container">
+    <aside>
+        <div style="position: fixed;">
+            <form id="search-params">
+                <details open>
+                    <summary>Search</summary>
+                    <input class="form-control" type="search"
+                    id="search"
+                    name="search" placeholder="Search"
+                    hx-post="/students/search"
+                    hx-trigger="keyup changed delay:300ms, change from:#search-params delay:300ms"
+                    hx-target="#search-results"
+                    hx-include="#search-params"
+                    autocomplete="off"
+                    autofocus>
+                </details>
+                <details open>
+                    <summary>Filter</summary>
+                    <ul>
+                        <li>
+                            <label for="declared">
+                                <input type="checkbox" id="declared" name="declared" role="switch" checked>
+                                Declared
+                            </label>
+                            <label for="local">
+                                <input type="checkbox" id="local" name="declared" role="switch" checked>
+                                Locals only
+                            </label>
+                            <label for="notes">
+                                <input type="checkbox" id="notes" name="notes" role="switch">
+                                Has notes
+                            </label>
+                        </li>
+                    </ul>
+                </details>
+                
+                <details open>
+                    <summary>Tags (inclusive)</summary>
+                    <ul>
+                        {{ range .tags}}
+                        <li>
+                            <label for="tag{{.}}">
+                                <input type="checkbox" id="tag{{.}}" name="tags" value="{{ . }}" {{ if eq year . }}checked{{ end }}>
+                                <span class="badge tag">{{ . }}</span>
+                            </label>
+                        </li>
+                        {{ end }}
+                    </ul>
+                </details>
+            </form>
+        </div>
+    </aside>
+    <div role="document">
+        <div class="grid">
+            <h1>Student Search</h1>
+        </div>
+        <table class="table highlight" hx-boost="true">
+            <thead>
+                <tr>
+                    <th>First year</th>
+                    <th>First name</th>
+                    <th>Surname</th>
+                    <th>ID</th>
+                </tr>
+            </thead>
+            <tbody id="search-results" _="install Sortable">
+                {{ template "fragment" . }}
+            </tbody>
+        </table>
+        
+    </article>
+</div>
+</main>
+{{ end }}

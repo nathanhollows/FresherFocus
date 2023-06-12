@@ -4,10 +4,19 @@ package filesystem
 
 import (
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/go-chi/chi"
 )
+
+func init() {
+	// Create static directory if it doesn't exist
+	if _, err := os.Stat("static"); os.IsNotExist(err) {
+		os.Mkdir("static", 0755)
+		os.Mkdir("static/databases", 0755)
+	}
+}
 
 // FileSystem interface to allow access to local files
 type FileSystem interface {

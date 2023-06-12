@@ -1,0 +1,32 @@
+{{ define "body" }}
+<main class="container">
+    <aside>
+        <div hx-get="/case/{{ .case.ID }}/sidebar" hx-swap="innerHTML" hx-trigger="notes from:body, upload from:body">
+            {{ template "sidebar" . }}
+        </div>
+    </aside>
+    <div role="document">
+        <hgroup>
+            {{ if .case.Title }}
+            <h1 class="text-cursor" hx-get="/case/{{ .case.ID }}/edit/title" hx-swap="outerHTML">{{ .case.Title }}</h1>
+            {{ else }} {{ template "editTitle" . }} {{ end }}
+            {{ if .case.Summary }}
+            <p class="text-cursor" hx-get="/case/{{ .case.ID }}/edit/summary" hx-swap="outerHTML">{{ .case.Summary }}</p>
+            {{ else }} {{ template "editSummary" . }} {{ end }}
+        </hgroup>
+        <form hx-encoding='multipart/form-data' hx-post='/upload' hx-trigger="change" hx-target="#files">
+            <div id="dropZone">
+                <div style="position: absolute;">Drop files to upload</div>
+                <input type="hidden" name="caseID" value="{{ .case.ID }}">
+                <input type="file" name="file" multiple> 
+            </div>
+        </form>
+        {{ template "notes" .case.Notes }}
+        <div id="new-note">
+            <p style="text-align: center;">
+                <a href="#" hx-get="/note/add/case/{{ .case.ID }}" hx-target="#new-note" role="button">Add a note</a>
+            </p>
+        </div>
+    </div>
+</main>
+{{ end }}

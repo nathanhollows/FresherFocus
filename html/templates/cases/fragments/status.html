@@ -1,0 +1,12 @@
+{{ define "fragment" }}
+{{ if .case.ClosedAt.IsZero }}
+<span class="badge open" hx-post="/case/{{ .case.ID }}/togglestatus" hx-target="this" hx-swap="outerHTML">Open</span>
+{{ else }}
+<span class="badge closed" hx-post="/case/{{ .case.ID}}/togglestatus" hx-target="this" hx-swap="outerHTML">Closed</span>
+{{ end }}
+<li id="closingtime" hx-swap-oob="true">
+    {{ if not .case.ClosedAt.IsZero }}
+    Closed on <time datetime="{{ .case.ClosedAt }}">{{ date .case.ClosedAt }}</time>
+    {{ end }}
+</li>
+{{ end }}

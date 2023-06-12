@@ -1,0 +1,134 @@
+{{ define "body" }}
+<main class="container">
+    <aside>
+        <form hx-get="/cases/search" hx-target="#search-params">
+            <div>
+                <details open>
+                    <summary>Search</summary>
+                    <ul>
+                        <li>
+                            <form>
+                                <input id="search" type="search" name="search" placeholder="Search" value="{{ .term }}"  _="on keyup
+                                if the event's key is 'Escape'
+                                set my value to ''
+                                trigger keyup
+                                else
+                                show <blockquote/> in #quotes when its textContent.toLowerCase() contains my value.toLowerCase()" 
+                                autofocus>
+                            </form> 
+                        </li>
+                    </ul>
+                    
+                </details>
+                <details open>
+                    <summary>Status</summary>
+                    <ul>
+                        <li>
+                            <label for="open">
+                                <input type="checkbox" id="open" name="open" role="switch" checked>
+                                Open
+                                
+                            </label>
+                        </li>
+                        <li>
+                            <label for="closed">
+                                <input type="checkbox" id="closed" name="closed" role="switch" checked>
+                                Closed
+                            </label>
+                        </li>
+                    </ul>
+                </details>
+                <details open>
+                    <summary>Files</summary>
+                    <ul>
+                        <li>
+                            <label for="files">
+                                <input type="checkbox" id="files" name="files" role="switch" checked>
+                                Files attached
+                            </label>
+                        </li>
+                    </ul>
+                </details>
+            </div>
+        </form>
+    </aside>
+    <div role="document">
+        <div class="grid">
+            <hgroup>
+                <h1>Cases
+                    <span class="htmx-indicator">
+                        <span aria-busy="true"></span>
+                    </span>
+                </h1>
+                <h2>{{ .activeCount }} active cases</h2>
+            </hgroup>
+            <div hx-boost="true" ><a href="/cases/new" role="button" style="float: inline-end;">New case</a></div>
+        </div>
+        <h1>
+        </h1>
+        <table>
+            <tbody>
+                {{ range .cases }}
+                <tr style="--border-width: 0;">
+                    <td>
+                        <span class="badge {{ lower .Status}}">{{ .Status }}</span>
+                    </td>
+                    <td>
+                        <a href="case/{{ .ID }}">
+                            {{ if .Title }}
+                            <strong>{{ .Title }}</strong>
+                            {{ else }}
+                            <strong>[[ Title ]]</strong>
+                            {{ end }}
+                        </a>
+                    </td>
+                    <td>
+                        {{ range .Students }}
+                        {{ .Badge }}
+                        {{ end }}
+                    </td>
+                    <td>
+                        <em style="float: inline-end">
+                            <time datetime="{{ .CreatedAt }}">{{ date .CreatedAt }}</time>
+                        </em>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td colspan="3">
+                        {{ .Summary }}
+                    </td>
+                </tr>
+                {{ end }}
+            </tbody>
+        </table>
+        <!-- <ul role="list" hx-boost="true">
+            {{ range .cases }}
+            <li>
+                <p>
+                    {{ if .Title }}
+                    <a href="case/{{ .ID }}">
+                        <strong>{{ .Title }}</strong>
+                    </a>
+                    {{ else }}
+                    <a href="case/{{ .ID }}">
+                        <strong>[[ Title ]]</strong>
+                    </a>
+                    {{ end }}
+                </p>
+                <p>{{ .Summary }}</p>
+                <p>
+                    <span class="badge {{ lower .Status}}">{{ .Status }}</span>
+                    {{ range .Students }}
+                    <a href="/student/{{ .ID }}" class="badge">{{ .ID }}</a>
+                    {{ end }}
+                    <em style="float: inline-end">
+                        <time datetime="{{ .CreatedAt }}">{{ date .CreatedAt }}</time>
+                    </em>
+                </p>
+            </li>
+            {{ end }}
+        </ul> -->
+    </div>
+</main>
+{{ end }}

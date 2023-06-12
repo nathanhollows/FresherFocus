@@ -1,0 +1,79 @@
+{{ define "body"}}
+<main class="container">
+    <aside>
+        <div>
+            <details open>
+                <summary>Table of Contents</summary>
+                <ul>
+                    <li>
+                        <a href="#typography">Typography</a>
+                    </li>
+                    <li>
+                        <a href="#images">Images</a>
+                    </li>
+                    <li>
+                        <a href="#students">Students</a>
+                    </li>
+                    <li>
+                        <a href="#cases">Cases</a>
+                    </li>
+                </ul>
+            </details>
+        </div>
+    </aside>
+    <div role="document">
+        <h1>Markdown and shortcuts</h1>
+        
+        <h2 id="typography">Typography</h2>
+
+        <h3>Headers</h3>
+
+        <p>
+            Headers in notes are automatically converted to a table of contents for both students and cases.
+            Use <kbd>ctrl+]</kbd> to increase the header level (up to 6), <kbd>ctrl+[</kbd> to decrease the header level (down to none)
+        </p>
+        <header>
+            <pre>
+                <code>
+# Heading 1
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
+                </code>
+            </pre>
+        </header>
+
+        <h3>Text</h3>
+        
+        <p>
+            <kbd>ctrl+b</kbd> to make text bold
+            <kbd>ctrl+i</kbd> to make text italic
+            <kbd>ctrl+u</kbd> to underline text
+        </p>
+
+        <pre>
+            <code>
+**bold**
+*italic*
+~~strikethrough~~
+> blockquote
+            </code>
+        </pre>
+        
+        <hr>
+
+        <h2 id="images">Images</h2>
+
+        <hr>
+
+        <h2 id="students">Students</h2>
+
+        <hr>
+
+        <h2 id="cases">Cases</h2>
+        
+    </div>
+</main>
+{{ end }}

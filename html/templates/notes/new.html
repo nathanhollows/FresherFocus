@@ -1,0 +1,23 @@
+{{ define "fragment" }}
+<form hx-post="/note/add/{{ .source }}/{{ .ID }}">
+    <article>
+        <header>
+            <strong>Add a note</strong>
+            <label for="preview-toggle" style="display: inline-block; float: inline-end;">
+                Show preview
+                <input id="preview-toggle" type="checkbox" name="content" role="switch">
+            </label>
+        </header>
+        
+        <textarea name="content" placeholder="Write a note..." class="textarea" rows="5" autofocus style="margin: calc(var(--spacing) * -2) auto; border: none;" required></textarea>
+        
+        <footer>
+            <div class="grid">
+                <input type="button" hx-get="/note/button/{{ .source }}/{{ .ID }}" hx-target="#new-note" value="Cancel" class="secondary">
+                <input type="submit" value="Save">
+            </div>
+        </footer>
+        
+    </article>
+</form>
+{{ end }}

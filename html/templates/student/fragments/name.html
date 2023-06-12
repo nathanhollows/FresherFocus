@@ -1,0 +1,5 @@
+{{ define "fragment" }}
+<h1 class="text-cursor" hx-get="/student/{{ .student.ID }}/edit/name" hx-swap="outerHTML">
+    {{ .student.Name }}
+</h1>
+{{ end }}

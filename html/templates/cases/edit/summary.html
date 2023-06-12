@@ -1,0 +1,22 @@
+{{ define "fragment" }}
+<form hx-post="/case/{{ .case.ID }}/edit/summary" hx-swap="outerHTML">
+    <label for="summary">Summary</label>
+    <div class="grid" style="grid-template-columns: minmax(0, 3fr) auto auto;">
+        <input type="text" id="summary" name="value" placeholder="A one sentence summary" value="{{ .case.Summary }}" autofocus onfocus="var temp_value=this.value; this.value=''; this.value=temp_value" >
+        <input type="button" hx-get="/case/{{ .case.ID }}/fragment/summary" hx-trigger="click, keyup[Escape] from:body"
+            hx-target="closest form" hx-swap="outerHTML" value="Cancel" class="secondary">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{{ end }}
+{{ define "editSummary" }}
+<form hx-post="/case/{{ .case.ID }}/edit/summary" hx-swap="outerHTML">
+    <label for="summary">Summary</label>
+    <div class="grid" style="grid-template-columns: minmax(0, 3fr) auto auto;">
+        <input type="text" id="summary" name="value" placeholder="A one sentence summary" value="{{ .case.Summary }}" autofocus onfocus="var temp_value=this.value; this.value=''; this.value=temp_value" >
+        <input type="button" hx-get="/case/{{ .case.ID }}/fragment/summary" hx-trigger="click, keyup[Escape] from:body"
+            hx-target="closest form" hx-swap="outerHTML" value="Cancel" class="secondary">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{{ end }}

@@ -1,0 +1,12 @@
+{{ define "fragment" }}
+{{ if ne (len .student.TOC) 0 }}
+<summary>Table of Contents</summary>
+<ul>
+        {{ range .student.TOC }}
+        <li>
+            {{ if .Break }}<hr>{{ else }}<a href="#{{ .Anchor }}">{{ .Title }}</a>{{ end }}
+        </li>
+        {{ end }}
+</ul>
+{{ end }}
+{{ end }}

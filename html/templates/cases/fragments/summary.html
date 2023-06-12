@@ -1,0 +1,9 @@
+{{ define "fragment" }}
+<p class="text-cursor" hx-get="/case/{{ .case.ID }}/edit/summary" hx-swap="outerHTML">
+    {{if .case.Summary}}
+        {{ .case.Summary }}
+    {{else}}
+        <em>[[ Summary ]]</em>
+    {{end}}
+</p>
+{{ end }}

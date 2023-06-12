@@ -1,0 +1,25 @@
+{{ define "fragment" }}
+<form hx-post="/student/{{ .student.ID }}/edit/name" hx-swap="outerHTML">
+    <label for="name">Preferred Name</label>
+    <div class="grid" style="grid-template-columns: minmax(0, 3fr) auto auto;">
+        <input type="text" id="name" name="value" placeholder="Name" value="{{ .student.Known_name }}" autofocus
+            onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">
+        <input type="button" hx-get="/student/{{ .student.ID }}/fragment/name" hx-trigger="click, keyup[Escape] from:body"
+            hx-target="closest form" hx-swap="outerHTML" value="Cancel" class="secondary">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{{ end }}
+
+{{ define "editName" }}
+<form hx-post="/student/{{ .student.ID }}/edit/name" hx-swap="outerHTML">
+    <label for="name">Preferred Name</label>
+    <div class="grid" style="grid-template-columns: minmax(0, 3fr) auto auto;">
+        <input type="text" id="name" name="value" placeholder="name" value="{{ .student.Known_name }}" autofocus
+            onfocus="var temp_value=this.value; this.value=''; this.value=temp_value">
+        <input type="button" hx-get="/student/{{ .student.ID }}/fragment/name" hx-trigger="click, keyup[Escape] from:body"
+            hx-target="closest form" hx-swap="outerHTML" value="Cancel" class="secondary">
+        <button type="submit">Submit</button>
+    </div>
+</form>
+{{ end }}

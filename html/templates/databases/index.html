@@ -1,0 +1,52 @@
+{{ define "body" }}
+<style>
+    body > main {
+        --block-spacing-horizontal: calc(var(--spacing) * 1.75);
+        grid-column-gap: calc(var(--block-spacing-horizontal) * 3);
+        display: grid;
+        grid-template-columns: 200px auto;
+    }
+</style>
+<main class="container" style="display: block;">
+    {{ template "flash" . }}
+    <form hx-encoding='multipart/form-data' hx-post='/upload/csv' hx-trigger="change" hx-target="#files">
+        <div id="dropZone">
+            <div style="position: absolute;">Drop files to upload</div>
+            <input type="hidden" name="caseID" value="{{ .case.ID }}">
+            <input type="file" name="file" multiple> 
+        </div>
+    </form>
+    
+    <h1>
+        Databases
+    </h1>
+    <table class="highlight">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Uploaded</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range .csvs }}
+            <tr>
+                <td>{{ .Name }}</td>
+                <td>{{ date .UploadedAt }}</td>
+                <td>
+                    <em>Not yet imported</em>
+                </td>
+                <td>
+                    <a href="/databases/view/{{ .ID }}">Import</a>
+                    &nbsp;&middot;&nbsp;
+                    <a href="{{ .Path }}">Download</a>
+                </td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </thead>
+</table>
+</div>
+</main>
+{{ end }}

@@ -1,0 +1,23 @@
+{{ define "fragment" }}
+<article id="note{{ .note.ID }}" hx-vals='{"note": "{{ .note.ID }}"}'>
+    {{ md .note.Content }}
+    <footer>
+        <div>
+            <span>
+                Posted on <time datetime="{{ .note.CreatedAt }}">{{ date .note.CreatedAt }}</time> 
+                {{ if ne .note.CreatedAt .note.UpdatedAt }}
+                &SmallCircle; Edited on <time datetime="{{ .noteUpdatedAt }}">{{ date .note.UpdatedAt }}</time>
+                {{ end }}
+            </span>
+            <span style="float: inline-end">
+                <a id="delete{{ .note.ID }}" hx-delete="/note/{{ .note.ID }}" hx-target="#note{{.note.ID}}" hx-swap="outerHTML"></a>
+                <a href="" data-target="modal-example" data-delete="delete{{.note.ID}}" onClick="toggleModal(event)">
+                    Delete
+                </a>
+                &nbsp;&middot;&nbsp;
+                <a href="" hx-get="/note/edit/{{ .note.ID }}" hx-target="#note{{.note.ID}}" hx-swap="outerHTML">Edit</a>
+            </span>
+        </div>
+    </footer>
+</article>
+{{ end }}

@@ -1,0 +1,92 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html data-theme="light">
+<head>
+    {{ if not .hxrequest }}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@1.*/css/pico.min.css">
+    <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ static "/style.css" }}" />
+    <link rel="stylesheet" href="/static/js/tribute.css" />
+    <script src="/static/js/tribute.js"></script>
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    {{ end }}
+    <title>{{ .title }}</title>
+</head>
+<body>
+    <div id="nav-container" class="container-fluid">
+        <nav class="container" hx-boost="true">
+            <ul>
+                <li><strong><a href="/">FresherFocus</a></strong></li>
+            </ul>
+            <ul>
+                <li><a href="/students">Students</a></li>
+                <li><a href="/cases">Cases</a></li>
+                <li><a href="/databases">Databases</a></li>
+            </ul>
+        </nav>
+    </div>
+    {{ template "body" .}}
+    <dialog id="modal-example">
+        <article>
+            <header>
+                <a href="#close" aria-label="Close" class="close" data-target="modal-example" onClick="toggleModal(event)"> </a>
+                <strong>Are you sure?</strong>
+            </header>
+            <p>You are about to delete this record. This cannot be undone.</p>
+            <footer>
+                <a href="#cancel" role="button" class="secondary" data-target="modal-example" onClick="toggleModal(event)">
+                    Cancel
+                </a>
+                <a href="#confirm" id="confirm-delete" class="delete" role="button" data-target="modal-example" onClick="toggleModal(event)">
+                    Delete
+                </a>
+            </footer>
+        </article>
+    </dialog>
+</body>
+{{ if not .hxrequest }}
+<script src="{{ static "/js/app.js" }}"></script>
+<script src="{{ static "/js/hyperscript.min.js" }}"></script>
+<script type="text/hyperscript">
+  behavior Sortable
+    on click from <th/>
+      -- get all the headers and the index of the column
+      set headers to <th/> in me
+      set col to headers.indexOf(target)
+      
+      -- get the table body and the rows as an array
+      set tbody to the first <tbody/> in me
+      set rowArray to (<tr/> in tbody) as Array
+
+      -- if this is a first click on this header
+      -- clear the data-ascending attribute on any other header
+      if target @data-ascending is null
+        remove @data-ascending from headers
+      end
+      
+      -- sort the array depending on the ascending header
+      if target @data-ascending is 'true'
+        set target @data-ascending to 'false'
+        rowArray.sort(\ row1, row2 -> row1.children[col].innerText <
+                                      row2.children[col].innerText )
+      else
+        set target @data-ascending to 'true'
+        rowArray.sort(\ row1, row2 -> row1.children[col].innerText >
+                                      row2.children[col].innerText )      
+      end
+      
+      -- merge back into the tbody
+      for row in rowArray
+        tbody.append(row)
+      end
+    end  
+  end
+</script>
+{{ end }}
+</html>
+{{ end }}

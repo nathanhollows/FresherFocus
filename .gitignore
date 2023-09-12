@@ -1,0 +1,5 @@
+*.exe
+*.db*
+static/files/*
+static/databases/*
+FresherFocus
